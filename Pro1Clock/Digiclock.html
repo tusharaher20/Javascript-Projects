@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <title>Digital Clock</title>
+    <style>
+        /* Custom styles for the clock container */
+        #clockContainer {
+            background-color: #fff;
+            color: #000;
+        }
+
+        /* Custom styles for the accordion */
+        .accordion {
+            display: none;
+        }
+
+        /* Styles for the arrow icon */
+        .arrow-up {
+            transform: rotate(180deg);
+            transition: transform 0.3s;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="clockContainer" class="h-screen spanClock transition-colors duration-500 ease-in-out p-4">
+
+        <div class="container mx-auto pt-8">
+            <!-- Clock Section -->
+            <section class="mb-8">
+                <p class="text-center">project-1</p>
+                <h2 class="text-2xl text-center font-bold mb-4 text-gray-800">Digital Clock</h2>
+                <div class="text-center mt-4">
+                    <h3 class="text-6xl font-bold text-black bg-white p-4 inline-block rounded-lg shadow-md" id="clock">
+                    </h3>
+                  
+                </div>
+            </section>
+        </div>
+
+        <!-- Accordion Section -->
+        <div class="container mx-auto mt-8">
+            <button class="bg-gray-300 p-2 mb-2 flex items-center justify-between w-full" onclick="toggleAccordion()">
+                Project Description
+                <span id="arrowIcon" class="arrow-up">▲</span>
+            </button>
+            <div class="accordion" id="projectDescription">
+                <p>This project is part of the "30 Days 30 JavaScript Projects" challenge and is crafted by <b>Tushar
+                        Aher</b>
+                    using HTML, CSS, and JavaScript. It offers a sleek and refined solution for showcasing the current
+                    time in a 24-hour format. The clock undergoes updates every second, guaranteeing precise
+                    timekeeping. Embrace simplicity and accuracy with this elegant digital clock.
+
+                </p>
+            </div>
+        </div>
+
+        <script>
+            // Function to update the clock display
+            function updateClock() {
+                // Get the current time
+                const now = new Date();
+
+                // Extract hours, minutes, and seconds
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const seconds = now.getSeconds().toString().padStart(2, '0');
+
+                // Display the time in the 'clock' element
+                const clockElement = document.getElementById('clock');
+                clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+            }
+
+            // Initial call to set the clock immediately
+            updateClock();
+
+            // Set an interval to update the clock every second
+            setInterval(updateClock, 1000);
+
+            // Function to toggle the accordion
+            function toggleAccordion() {
+                const accordion = document.getElementById('projectDescription');
+                const arrowIcon = document.getElementById('arrowIcon');
+
+                if (accordion.style.display === 'block') {
+                    accordion.style.display = 'none';
+                    arrowIcon.classList.remove('arrow-up');
+                } else {
+                    accordion.style.display = 'block';
+                    arrowIcon.classList.add('arrow-up');
+                }
+            }
+        </script>
+    </div>
+
+</body>
+
+</html>
