@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Background Color Changer</title>
     <style>
-        body {
+        .buttonOutDiv {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -15,14 +15,16 @@
         }
 
         button {
-            font-size: 24px;
-            padding: 10px 20px;
+            font-size: 8px;
         }
     </style>
 </head>
 
 <body>
-    <button id="colorButton">Change Background Color</button>
+
+    <div class="buttonOutDiv">
+        <button id="colorButton">Click here</button>
+    </div>
     <script>
 
         function getRandomColor() {
@@ -35,10 +37,110 @@
         }
 
         document.getElementById('colorButton').addEventListener('click', function () {
-            var color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+            color = '#' + Math.floor(Math.random() * 16777215).toString(16);
             document.body.style.backgroundColor = color;
         });
     </script>
 </body>
 
 </html>
+
+
+<!-- Notes
+
+Math.random(): Generates a random number between 0 (inclusive) and 1 (exclusive).
+
+Math.random() * 16777215: Multiplies the random number by 16777215. The number 16777215 is often used because it's the
+decimal representation of the hexadecimal color FFFFFF, which is white. So, this step effectively generates a random
+number in the range of 0 to FFFFFF.
+
+Math.floor(...): Rounds down the result to the nearest whole number. This ensures that the value is an integer.
+
+.toString(16): Converts the integer to a hexadecimal string. The 16 passed as an argument specifies that the conversion
+should be in base-16 (hexadecimal). This step is crucial because it ensures that the generated number is represented in
+the hexadecimal format.
+
+'#' + ...: Prepends the '#' symbol to the hexadecimal string. This is how hexadecimal color codes are commonly
+represented in CSS and web development.
+
+
+.toString() Method:
+
+In JavaScript, the .toString() method is used to convert a value to a string.
+If you call .toString() without any arguments, it converts a number to a string in base-10 (decimal) format.
+.toString(16):
+
+The toString() method can take an argument, which specifies the base to use for representing the number.
+In this case, the argument is 16, indicating that the conversion should be in base-16, which is hexadecimal.
+Hexadecimal (Base-16):
+
+Hexadecimal is a numeral system with a base of 16.
+It uses the digits 0-9 and the letters A-F to represent values. For example, 10 in decimal is represented as A in hexadecimal, 15 is represented as F, and 16 is represented as 10.
+Each digit in a hexadecimal number represents a power of 16.
+Example:
+
+Let's say x = 255 (which is FF in hexadecimal).
+x.toString(16) would convert 255 to the string 'FF'.
+
+
+Base 10 (Decimal):
+
+Base 10, also known as the decimal system, is the standard numbering system used by humans.
+It uses 10 digits: 0, 1, 2, 3, 4, 5, 6, 7, 8, and 9.
+Each digit's value is a power of 10 based on its position in the number. For example, in the number 543, the digit 3 represents 
+3
+×
+1
+0
+0
+3×10 
+0
+ , the digit 4 represents 
+4
+×
+1
+0
+1
+4×10 
+1
+ , and the digit 5 represents 
+5
+×
+1
+0
+2
+5×10 
+2
+ .
+Most everyday calculations and numerical representations are in base 10.
+Base 16 (Hexadecimal):
+
+Base 16, also known as the hexadecimal system, is a numeral system that uses 16 digits.
+It uses the digits 0-9 and the letters A-F to represent values. In hexadecimal, A represents 10, B represents 11, C represents 12, D represents 13, E represents 14, and F represents 15.
+Each digit's value is a power of 16 based on its position in the number. For example, in the hexadecimal number 1A3, the digit 3 represents 
+3
+×
+1
+6
+0
+3×16 
+0
+ , the digit A represents 
+10
+×
+1
+6
+1
+10×16 
+1
+ , and the digit 1 represents 
+1
+×
+1
+6
+2
+1×16 
+2
+ .
+Hexadecimal is commonly used in computing, particularly for representing colors, memory addresses, and binary data.
+-->
