@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #todo-container {
+            width: 300px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 8px 0;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .accordion {
+            display: none;
+        }
+
+        .arrow-up {
+            transform: rotate(180deg);
+            transition: transform 0.3s;
+        }
+
+        #projectDescription {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="todo-container">
+        <h2>To-Do List</h2>
+        <input type="text" id="taskInput" placeholder="New task...">
+        <button onclick="addTask()">Add</button>
+        <ul id="taskList"></ul>
+    </div>
+    <div class="containermaintodolist">
+        <div id="projectDescription" class="accordion">
+            <h2 onclick="toggleAccordion()">Project Description <span id="arrowIcon" class="arrow-up">&#9650;</span>
+            </h2>
+            <p>This project is part of the "30 Days 30 JavaScript Projects" challenge and is created by <b>Tushar
+                    Aher</b> using HTML, CSS, and JavaScript. It provides a minimalistic and functional solution for
+                managing tasks. Users can easily add new tasks and remove completed ones, creating a streamlined to-do
+                list. Embrace productivity and organization with this sleek and user-friendly to-do list application.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Function to add a new task
+        function addTask() {
+            var taskInput = document.getElementById("taskInput");
+            var taskList = document.getElementById("taskList");
+
+            if (taskInput.value.trim() === "") {
+                alert("Please enter a task.");
+                return;
+            }
+
+            var li = document.createElement("li");
+            li.textContent = taskInput.value;
+            li.innerHTML += `<button onclick="removeTask(this)">Remove</button>`;
+
+            taskList.appendChild(li);
+            taskInput.value = "";
+
+            // Save tasks to local storage
+            saveTasksToLocalStorage();
+        }
+
+        // Function to remove a task
+        function removeTask(button) {
+            var li = button.parentElement;
+            li.parentElement.removeChild(li);
+
+            // Save tasks to local storage after removal
+            saveTasksToLocalStorage();
+        }
+
+        // Function to toggle the project description accordion
+        function toggleAccordion() {
+            const accordion = document.getElementById('projectDescription');
+            const arrowIcon = document.getElementById('arrowIcon');
+
+            if (accordion.style.display === 'block') {
+                accordion.style.display = 'none';
+                arrowIcon.classList.remove('arrow-up');
+            } else {
+                accordion.style.display = 'block';
+                arrowIcon.classList.add('arrow-up');
+            }
+        }
+
+        // Function to save tasks to local storage
+        function saveTasksToLocalStorage() {
+            var taskList = document.getElementById("taskList");
+            var tasks = [];
+
+            // Iterate through task items and store their text content
+            for (var i = 0; i < taskList.children.length; i++) {
+                tasks.push(taskList.children[i].textContent.trim());
+            }
+
+            // Save tasks array to local storage
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+        }
+
+        // Function to load tasks from local storage
+        function loadTasksFromLocalStorage() {
+            var taskList = document.getElementById("taskList");
+            var tasks = localStorage.getItem("tasks");
+
+            // If tasks exist in local storage, add them to the task list
+            if (tasks) {
+                tasks = JSON.parse(tasks);
+                tasks.forEach(function (taskText) {
+                    var li = document.createElement("li");
+                    li.textContent = taskText;
+                    li.innerHTML += `<button onclick="removeTask(this)">Remove</button>`;
+                    taskList.appendChild(li);
+                });
+            }
+        }
+
+        // Load tasks from local storage on page load
+        loadTasksFromLocalStorage();
+    </script>
+</body>
+
+</html>

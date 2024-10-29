@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Styles for the clock */
+        .clock {
+            width: 200px;
+            height: 200px;
+            border: 2px solid #333;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .hand {
+            position: absolute;
+            transform-origin: 50% 100%;
+            background-color: #333;
+        }
+
+        .hour {
+            height: 40px;
+            width: 4px;
+            top: 50%;
+            left: 50%;
+            margin-top: -40px;
+            /* Half of the height */
+            margin-left: -2px;
+            /* Half of the width */
+        }
+
+        .minute {
+            height: 80px;
+            width: 2px;
+            top: 50%;
+            left: 50%;
+            margin-top: -80px;
+            /* Half of the height */
+            margin-left: -1px;
+            /* Half of the width */
+        }
+
+        .second {
+            height: 90px;
+            width: 1px;
+            top: 50%;
+            left: 50%;
+            margin-top: -90px;
+            /* Half of the height */
+            margin-left: -0.5px;
+            /* Half of the width */
+            background-color: red;
+        }
+
+        .number {
+            position: absolute;
+            color: #333;
+            font-size: 14px;
+            font-weight: bold;
+            transform-origin: 50% 100%;
+        }
+
+        .dot {
+            position: absolute;
+            height: 4px;
+            width: 4px;
+            background-color: #333;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="clock">
+        <!-- Numbers -->
+        <div class="number" style="transform: rotate(30deg) translateX(-50%) translateY(-100%);">1</div>
+        <div class="number" style="transform: rotate(60deg) translateX(-50%) translateY(-100%);">2</div>
+        <div class="number" style="transform: rotate(90deg) translateX(-50%) translateY(-100%);">3</div>
+        <div class="number" style="transform: rotate(120deg) translateX(-50%) translateY(-100%);">4</div>
+        <div class="number" style="transform: rotate(150deg) translateX(-50%) translateY(-100%);">5</div>
+        <div class="number" style="transform: rotate(180deg) translateX(-50%) translateY(-100%);">6</div>
+        <div class="number" style="transform: rotate(210deg) translateX(-50%) translateY(-100%);">7</div>
+        <div class="number" style="transform: rotate(240deg) translateX(-50%) translateY(-100%);">8</div>
+        <div class="number" style="transform: rotate(270deg) translateX(-50%) translateY(-100%);">9</div>
+        <div class="number" style="transform: rotate(300deg) translateX(-50%) translateY(-100%);">10</div>
+        <div class="number" style="transform: rotate(330deg) translateX(-50%) translateY(-100%);">11</div>
+        <div class="number" style="transform: rotate(360deg) translateX(-50%) translateY(-100%);">12</div>
+
+        <!-- Dots for minutes -->
+        <div class="dot" style="transform: rotate(30deg) translateX(-50%) translateY(-100%);"></div>
+        <div class="dot" style="transform: rotate(60deg) translateX(-50%) translateY(-100%);"></div>
+        <div class="dot" style="transform: rotate(90deg) translateX(-50%) translateY(-100%);"></div>
+        <div class="dot" style="transform: rotate(120deg) translateX(-50%) translateY(-100%);"></div>
+        <div class="dot" style="transform: rotate(150deg) translateX(-50%) translateY(-100%);"></div>
+        <div class="dot" style="transform: rotate(180deg) translateX(-50%) translateY(-100%);"></div>
+        <div class="dot" style="transform: rotate(210deg) translateX(-50%) translateY(-100%);"></div>
+        <div class="dot" style="transform: rotate(240deg) translateX(-50%) translateY(-100%);"></div>
+        <div class="dot" style="transform: rotate(270deg) translateX(-50%) translateY(-100%);"></div>
+        <div class="dot" style="transform: rotate(300deg) translateX(-50%) translateY(-100%);"></div>
+        <div class="dot" style="transform: rotate(330deg) translateX(-50%) translateY(-100%);"></div>
+        <div class="dot" style="transform: rotate(360deg) translateX(-50%) translateY(-100%);"></div>
+
+        <!-- Clock hands -->
+        <div class="hand hour" id="hour"></div>
+        <div class="hand minute" id="minute"></div>
+        <div class="hand second" id="second"></div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours() % 12;
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+
+            const hourRotation = (360 / 12) * (hours + minutes / 60);
+            const minuteRotation = (360 / 60) * minutes;
+            const secondRotation = (360 / 60) * seconds;
+
+            document.getElementById('hour').style.transform = `rotate(${hourRotation}deg)`;
+            document.getElementById('minute').style.transform = `rotate(${minuteRotation}deg)`;
+            document.getElementById('second').style.transform = `rotate(${secondRotation}deg)`;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+</body>
+
+</html>

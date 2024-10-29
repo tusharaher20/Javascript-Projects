@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        .instructions {
+            width: 100%;
+            flex-basis: 300px;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .day {
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .mood-select {
+            text-align: center;
+            margin-bottom: 10px;
+            width: 100%;
+
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .mainHeading {
+            display: block;
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 50px;
+        }
+
+        .containerMood {
+            width: 100%;
+            text-align: center;
+        }
+
+        .mainHeading {
+            flex-grow: 1;
+        }
+
+        select#mood {
+
+            padding: 5px;
+            border-radius: 25px;
+        }
+
+        .monthMood {
+            margin-top: 40px;
+        }
+
+        .buttonMoodcolor {
+            margin: 5px;
+            border: 1px solid white;
+            border-radius: 50px;
+            width: 90px;
+            padding: 5px;
+        }
+
+        @media only screen and (min-width: 768px) {
+            .calendar {
+                /* width: 48%; */
+                /* Two months per row */
+            }
+        }
+
+        .mood-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            /* Wrap buttons to next line on small screens */
+            justify-content: space-between;
+            /* Distribute buttons evenly */
+        }
+
+        /* .buttonMoodcolor {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        } */
+
+        .ListMoodColor {
+            display: flex;
+            justify-content: space-evenly;
+            list-style: none;
+        }
+
+        .setMoodbutton {
+            display: none;
+        }
+
+
+        .ListMoodColor {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+        }
+
+        .buttonMoodcolor {
+            padding: 5px;
+            /* margin-bottom: 30px; */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        @media (max-width: 600px) {
+
+            /* Stack buttons on top of each other for screens with a width of 600px or less */
+            .ListMoodColor {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        .accordion {
+            display: none;
+        }
+
+        /* Styles for the arrow icon */
+        .arrow-up {
+            transform: rotate(180deg);
+            transition: transform 0.3s;
+        }
+
+        .listInstr {
+            list-style: initial;
+            margin-bottom: 30px;
+        }
+    </style>
+    <title>Mood Calendar 2024</title>
+</head>
+
+<body>
+    <div class="containerMood">
+        <h1 class="mainHeading">Mood Calendar 2024</h1>
+        <!-- <p>January 2024</p> -->
+    </div>
+    <div class="instructions">
+        <h2>Instructions:</h2>
+        <ol class="listInstr">
+            <li>Select a mood from the dropdown.</li>
+            <li>Click on a day in the calendar to set your mood.</li>
+            <li>Calendar will display the mood with a colored background.</li>
+            <li>Data is saved in Local Storage.</li>
+        </ol>
+
+        <p><strong>Mood Colors:</strong></p>
+        <ul class="ListMoodColor">
+            <li><button class='buttonMoodcolor' style='background-color:#6eff71;'>😊 Happy</button></li>
+
+            <li><button class='buttonMoodcolor' style='background-color:#f9f9a4;'>😐 Neutral</button></li>
+            <li><button class='buttonMoodcolor' style='background-color:#7a7aff;'>😢 Sad</button></li>
+            <li><button class='buttonMoodcolor' style='background-color:#ff7a7a;'>😡 Angry</button></li>
+        </ul>
+    </div>
+
+    <div class="mood-select">
+        <label for="mood">Select Mood:</label>
+        <select id="mood">
+            <option value="😊">😊 Happy</option>
+            <option value="😐">😐 Neutral</option>
+            <option value="😢">😢 Sad</option>
+            <option value="😡">😡 Angry</option>
+        </select>
+        <button class="setMoodbutton" onclick="handleDayClick()">Set Mood</button>
+    </div>
+
+
+    <div class="Monthsdata">
+        <p>January 2024</p>
+        <div class="calendar" id="calendar"></div>
+        <p class="monthMood">February 2024</p>
+        <div class="calendar" id="februaryCalendar"></div>
+        <!-- March html -->
+        <p class="monthMood">March 2024</p>
+        <div class="calendar" id="marchCalendar"></div>
+        <!-- April -->
+        <p class="monthMood">April 2024</p>
+        <div class="calendar" id="aprilCalendar"></div>
+    </div>
+
+    <!-- Accordion Section -->
+    <div class="container mx-auto mt-8">
+        <button class="bg-gray-300 p-2 mb-2 flex items-center justify-between w-full" onclick="toggleAccordion()">
+            Project Description
+            <span id="arrowIcon" class="arrow-up">▲</span>
+        </button>
+        <div class="accordion" id="projectDescription">
+
+            <p>Welcome to the Mood Calendar 2024, an interactive and personalized way to track and visualize your daily
+                emotions throughout the year. This web-based calendar allows you to select your mood from a range of
+                emoticons and associate it with specific days.
+                <br> <br>
+
+                This project is part of the "30 Days 30 JavaScript Projects" challenge and is crafted by <b>Tushar
+                    Aher</b>
+                using HTML, CSS, and JavaScript. Each mood is represented by a distinct color, creating a
+                vibrant visual representation of your emotional journey.
+            </p>
+        </div>
+    </div>
+
+
+    <script>
+        // Function to create the calendar
+        function createCalendar(year, month) {
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const calendarElement = document.getElementById('calendar');
+            calendarElement.innerHTML = '';
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('day');
+                dayElement.textContent = day;
+                dayElement.setAttribute('data-day', day);
+                dayElement.addEventListener('click', handleDayClick);
+                calendarElement.appendChild(dayElement);
+            }
+
+            // Load saved mood data
+            loadMoodData();
+        }
+
+        // Function to handle day click event
+        function handleDayClick(event) {
+            const selectedDay = event.target.getAttribute('data-day');
+            const selectedMood = document.getElementById('mood').value;
+
+            // Save mood data in Local Storage
+            const moodData = JSON.parse(localStorage.getItem('moodData')) || {};
+            moodData[selectedDay] = selectedMood;
+            localStorage.setItem('moodData', JSON.stringify(moodData));
+
+            // Display mood on the calendar
+            event.target.style.backgroundColor = getMoodColor(selectedMood);
+
+            // alert(`On ${selectedDay}, you are feeling ${selectedMood}`);
+        }
+
+        // Function to load saved mood data
+        function loadMoodData() {
+            const moodData = JSON.parse(localStorage.getItem('moodData')) || {};
+
+            for (const day in moodData) {
+                const dayElement = document.querySelector(`.day[data-day="${day}"]`);
+                if (dayElement) {
+                    dayElement.style.backgroundColor = getMoodColor(moodData[day]);
+                }
+            }
+        }
+
+        // Function to get mood color based on the selected mood
+        function getMoodColor(mood) {
+            switch (mood) {
+                case '😊':
+                    return '#6eff71'; // Green
+                case '😐':
+                    return '#f9f9a4'; // Yellow
+                case '😢':
+                    return '#7a7aff'; // Blue
+                case '😡':
+                    return '#ff7a7a'; // Red
+                default:
+                    return '#fff'; // Default background color
+            }
+        }
+
+        // Set the initial calendar for January 2024
+        createCalendar(2024, 0);
+    </script>
+
+
+    <!-- February -->
+    <!-- Add this code snippet where you want to generate the month of February -->
+
+    <script>
+        // Function to create the calendar for February
+        function createFebruaryCalendar() {
+            const calendarElement = document.getElementById('februaryCalendar');
+            calendarElement.innerHTML = '';
+
+            const daysInFebruary = new Date(2024, 1 + 1, 0).getDate(); // Note: February is the 2nd month
+
+            for (let day = 1; day <= daysInFebruary; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('day');
+                dayElement.textContent = day;
+                dayElement.setAttribute('data-day', day);
+                dayElement.addEventListener('click', handleFebruaryDayClick);
+                calendarElement.appendChild(dayElement);
+            }
+
+            // Load saved mood data for February
+            loadFebruaryMoodData();
+        }
+
+        // Function to handle day click event for February
+        function handleFebruaryDayClick(event) {
+            const selectedDay = event.target.getAttribute('data-day');
+            const selectedMood = document.getElementById('mood').value;
+
+            // Save mood data in Local Storage for February
+            const moodData = JSON.parse(localStorage.getItem('februaryMoodData')) || {};
+            moodData[selectedDay] = selectedMood;
+            localStorage.setItem('februaryMoodData', JSON.stringify(moodData));
+
+            // Display mood on the calendar
+            event.target.style.backgroundColor = getMoodColor(selectedMood);
+        }
+
+        // Function to load saved mood data for February
+        function loadFebruaryMoodData() {
+            const moodData = JSON.parse(localStorage.getItem('februaryMoodData')) || {};
+
+            for (const day in moodData) {
+                const dayElement = document.querySelector(`#februaryCalendar .day[data-day="${day}"]`);
+                if (dayElement) {
+                    dayElement.style.backgroundColor = getMoodColor(moodData[day]);
+                }
+            }
+        }
+
+        // Call the function to create the calendar for February
+        createFebruaryCalendar();
+    </script>
+    <!-- Code for March -->
+    <script>
+        // Function to create the calendar for March
+        function createMarchCalendar() {
+            const calendarElement = document.getElementById('marchCalendar');
+            calendarElement.innerHTML = '';
+
+            const daysInMarch = new Date(2024, 2 + 1, 0).getDate(); // Note: March is the 3rd month
+
+            for (let day = 1; day <= daysInMarch; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('day');
+                dayElement.textContent = day;
+                dayElement.setAttribute('data-day', day);
+                dayElement.addEventListener('click', handleMarchDayClick);
+                calendarElement.appendChild(dayElement);
+            }
+
+            // Load saved mood data for March
+            loadMarchMoodData();
+        }
+
+        // Function to handle day click event for March
+        function handleMarchDayClick(event) {
+            const selectedDay = event.target.getAttribute('data-day');
+            const selectedMood = document.getElementById('mood').value;
+
+            // Save mood data in Local Storage for March
+            const moodData = JSON.parse(localStorage.getItem('marchMoodData')) || {};
+            moodData[selectedDay] = selectedMood;
+            localStorage.setItem('marchMoodData', JSON.stringify(moodData));
+
+            // Display mood on the calendar
+            event.target.style.backgroundColor = getMoodColor(selectedMood);
+        }
+
+        // Function to load saved mood data for March
+        function loadMarchMoodData() {
+            const moodData = JSON.parse(localStorage.getItem('marchMoodData')) || {};
+
+            for (const day in moodData) {
+                const dayElement = document.querySelector(`#marchCalendar .day[data-day="${day}"]`);
+                if (dayElement) {
+                    dayElement.style.backgroundColor = getMoodColor(moodData[day]);
+                }
+            }
+        }
+
+        // Call the function to create the calendar for March
+        createMarchCalendar();
+    </script>
+    <!-- april  -->
+    <script>
+        // Function to create the calendar for April
+        function createAprilCalendar() {
+            const calendarElement = document.getElementById('aprilCalendar');
+            calendarElement.innerHTML = '';
+
+            // Update the month to 3 (April is the 4th month)
+            const daysInApril = new Date(2024, 3 + 1, 0).getDate();
+
+            for (let day = 1; day <= daysInApril; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('day');
+                dayElement.textContent = day;
+                dayElement.setAttribute('data-day', day);
+                dayElement.addEventListener('click', handleAprilDayClick);
+                calendarElement.appendChild(dayElement);
+            }
+
+            // Load saved mood data for April
+            loadAprilMoodData();
+        }
+
+        // Function to handle day click event for April
+        function handleAprilDayClick(event) {
+            const selectedDay = event.target.getAttribute('data-day');
+            const selectedMood = document.getElementById('mood').value;
+
+            // Save mood data in Local Storage for April
+            const moodData = JSON.parse(localStorage.getItem('aprilMoodData')) || {};
+            moodData[selectedDay] = selectedMood;
+            localStorage.setItem('aprilMoodData', JSON.stringify(moodData));
+
+            // Display mood on the calendar
+            event.target.style.backgroundColor = getMoodColor(selectedMood);
+        }
+
+        // Function to load saved mood data for April
+        function loadAprilMoodData() {
+            const moodData = JSON.parse(localStorage.getItem('aprilMoodData')) || {};
+
+            for (const day in moodData) {
+                const dayElement = document.querySelector(`#aprilCalendar .day[data-day="${day}"]`);
+                if (dayElement) {
+                    dayElement.style.backgroundColor = getMoodColor(moodData[day]);
+                }
+            }
+        }
+
+        // Call the function to create the calendar for April
+        createAprilCalendar();
+    </script>
+
+    <script>
+        function toggleAccordion() {
+            const accordion = document.getElementById('projectDescription');
+            const arrowIcon = document.getElementById('arrowIcon');
+
+            if (accordion.style.display === 'block') {
+                accordion.style.display = 'none';
+                arrowIcon.classList.remove('arrow-up');
+            } else {
+                accordion.style.display = 'block';
+                arrowIcon.classList.add('arrow-up');
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

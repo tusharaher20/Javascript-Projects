@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .day {
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .day:hover {
+            background-color: #eee;
+        }
+
+        .mood-select {
+            margin-top: 10px;
+            width: 100%;
+        }
+    </style>
+    <title>Mood Calendar 2024</title>
+</head>
+
+<body>
+    <h1>Mood Calendar 2024</h1>
+    <div class="calendar" id="calendar"></div>
+    <div class="mood-select">
+        <label for="mood">Select Mood:</label>
+        <select id="mood">
+            <option value="😊">😊 Happy</option>
+            <option value="😐">😐 Neutral</option>
+            <option value="😢">😢 Sad</option>
+            <option value="😡">😡 Angry</option>
+        </select>
+    </div>
+
+    <script>
+        // Function to create the calendar
+        function createCalendar(year, month) {
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const calendarElement = document.getElementById('calendar');
+            calendarElement.innerHTML = '';
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('day');
+                dayElement.textContent = day;
+                dayElement.setAttribute('data-day', day);
+                dayElement.addEventListener('click', handleDayClick);
+                calendarElement.appendChild(dayElement);
+            }
+        }
+
+        // Function to handle day click event
+        function handleDayClick(event) {
+            const selectedDay = event.target.getAttribute('data-day');
+            const selectedMood = document.getElementById('mood').value;
+
+            // Save mood data in Local Storage
+            const moodData = JSON.parse(localStorage.getItem('moodData')) || {};
+            moodData[selectedDay] = selectedMood;
+            localStorage.setItem('moodData', JSON.stringify(moodData));
+
+            alert(`On ${selectedDay}, you are feeling ${selectedMood}`);
+        }
+
+        // Set the initial calendar for January 2024
+        createCalendar(2024, 0);
+    </script>
+</body>
+
+</html>
